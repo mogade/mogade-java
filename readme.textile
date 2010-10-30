@@ -1,0 +1,13 @@
+h2. mogade-java
+
+mogade-java is the java language library for using the mogade API. 
+mogade provides an api service that helps you build better games.
+More about mogade can be read at "mogade.com":http://mogade.com/
+
+h3. Usage
+
+Mogade mogade = MogadeImpl.create(gameKey, secret);
+
+h3. Other language librarys for mogade
+
+"mogade.com/libraries":http://mogade.com/libraries
