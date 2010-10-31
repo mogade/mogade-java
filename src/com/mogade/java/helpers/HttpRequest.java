@@ -32,12 +32,15 @@ public class HttpRequest
          output.flush();
 
          int responseCode = connection.getResponseCode();
-         if (responseCode != HttpURLConnection.HTTP_OK && responseCode != HttpURLConnection.HTTP_INTERNAL_ERROR)
+         if (responseCode == HttpURLConnection.HTTP_OK)
          {
-            throw new IOException(connection.getResponseMessage());
+            return readAll(connection.getInputStream());
          }
-
-         return readAll(connection.getInputStream());
+         if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST)
+         {
+            return readAll(connection.getErrorStream());
+         }
+         throw new IOException(connection.getResponseMessage());
       }
       finally
       {
