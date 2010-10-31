@@ -1,12 +1,12 @@
-h2. mogade-java
+h1. mogade-java
 
 mogade-java is the java language library for using the mogade API. 
 
 mogade provides an api service that helps you build better games. More about mogade can be read at "mogade.com":http://mogade.com/
 
-h3. Usage
+h2. Usage
 
-@
+<pre>
 String leaderboardId = "MyFunGame";
 
 Mogade mogade = MogadeImpl.create("MyGameKey", "MySecret");
@@ -30,8 +30,8 @@ if (response.getOverall() > 0)
 {
    //do something with rank
 }
-@
+</pre>
 
-h3. Other language libraries for mogade
+h2. Other language libraries for mogade
 
 "mogade.com/libraries":http://mogade.com/libraries
