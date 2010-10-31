@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="mogade-java" default="all">
+  
+  
+  <property file="mogade-java.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+    <include name="**/?*.xml"/>
+    <include name="**/?*.gif"/>
+    <include name="**/?*.png"/>
+    <include name="**/?*.jpeg"/>
+    <include name="**/?*.jpg"/>
+    <include name="**/?*.html"/>
+    <include name="**/?*.dtd"/>
+    <include name="**/?*.tld"/>
+    <include name="**/?*.ftl"/>
+  </patternset>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.apachecommonscodec.classpath">
+    <pathelement location="${basedir}/lib/commons-codec-1.4.jar"/>
+  </path>
+  
+  <path id="library.gson.classpath">
+    <pathelement location="${basedir}/lib/gson-1.5.jar"/>
+  </path>
+  
+  <path id="library.junit.classpath">
+    <pathelement location="${basedir}/tests/lib/junit-4.8.2.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module mogade-java -->
+  
+  <dirname property="module.mogade-java.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.mogade-java" value="${compiler.args}"/>
+  
+  <property name="mogade-java.output.dir" value="${module.mogade-java.basedir}/out/production/mogade-java"/>
+  <property name="mogade-java.testoutput.dir" value="${module.mogade-java.basedir}/out/test/mogade-java"/>
+  
+  <path id="mogade-java.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="mogade-java.module.production.classpath">
+    <path refid="library.gson.classpath"/>
+    <path refid="library.apachecommonscodec.classpath"/>
+    <path refid="library.junit.classpath"/>
+  </path>
+  
+  <path id="mogade-java.runtime.production.module.classpath">
+    <pathelement location="${mogade-java.output.dir}"/>
+    <path refid="library.gson.classpath"/>
+    <path refid="library.apachecommonscodec.classpath"/>
+    <path refid="library.junit.classpath"/>
+  </path>
+  
+  <path id="mogade-java.module.classpath">
+    <pathelement location="${mogade-java.output.dir}"/>
+    <path refid="library.gson.classpath"/>
+    <path refid="library.apachecommonscodec.classpath"/>
+    <path refid="library.junit.classpath"/>
+  </path>
+  
+  <path id="mogade-java.runtime.module.classpath">
+    <pathelement location="${mogade-java.output.dir}"/>
+    <pathelement location="${mogade-java.testoutput.dir}"/>
+    <path refid="library.gson.classpath"/>
+    <path refid="library.apachecommonscodec.classpath"/>
+    <path refid="library.junit.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.mogade-java">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.mogade-java">
+    <patternset refid="excluded.from.module.mogade-java"/>
+  </patternset>
+  
+  <path id="mogade-java.module.sourcepath">
+    <dirset dir="${module.mogade-java.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="mogade-java.module.test.sourcepath">
+    <dirset dir="${module.mogade-java.basedir}">
+      <include name="tests/src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.mogade-java" depends="compile.module.mogade-java.production,compile.module.mogade-java.tests" description="Compile module mogade-java"/>
+  
+  <target name="compile.module.mogade-java.production" description="Compile module mogade-java; production classes">
+    <mkdir dir="${mogade-java.output.dir}"/>
+    <javac destdir="${mogade-java.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.mogade-java}"/>
+      <bootclasspath refid="mogade-java.module.bootclasspath"/>
+      <classpath refid="mogade-java.module.production.classpath"/>
+      <src refid="mogade-java.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.mogade-java"/>
+    </javac>
+    
+    <copy todir="${mogade-java.output.dir}">
+      <fileset dir="${module.mogade-java.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.mogade-java.tests" depends="compile.module.mogade-java.production" description="compile module mogade-java; test classes" unless="skip.tests">
+    <mkdir dir="${mogade-java.testoutput.dir}"/>
+    <javac destdir="${mogade-java.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.mogade-java}"/>
+      <bootclasspath refid="mogade-java.module.bootclasspath"/>
+      <classpath refid="mogade-java.module.classpath"/>
+      <src refid="mogade-java.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.mogade-java"/>
+    </javac>
+    
+    <copy todir="${mogade-java.testoutput.dir}">
+      <fileset dir="${module.mogade-java.basedir}/tests/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.mogade-java" description="cleanup module">
+    <delete dir="${mogade-java.output.dir}"/>
+    <delete dir="${mogade-java.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.mogade-java" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.mogade-java" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>

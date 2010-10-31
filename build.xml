@@ -1,0 +1,40 @@
+<project name="mogade-java" default="debug" basedir=".">
+   <property name="jarFileName" location="out/production/mogade-java.jar"/>
+   <property name="srcJarFileName" location="out/production/mogade-java-src.jar"/>
+   <property name="outputPath" location="out/production/mogade-java"/>
+   <property name="srcPath" location="src"/>
+
+   <target name="build">
+      <ant antfile="mogade-java.xml" />
+   </target>
+
+   <target name="package_jars" depends="build">
+      <jar destfile="${jarFileName}">
+         <fileset dir="${outputPath}" />
+      </jar>
+      <jar destfile="${srcJarFileName}">
+         <fileset dir="${outputPath}" />
+         <fileset dir="${srcPath}" />
+      </jar>
+   </target>
+
+   <target name="test" depends="build">
+      <junit failureProperty="test.failure">
+         <classpath>
+            <pathelement path="${outputPath}" />
+            <pathelement path="out/test/mogade-java" />
+            <pathelement location="lib/gson-1.5.jar" />
+            <pathelement location="lib/commons-codec-1.4.jar" />
+            <pathelement location="tests/lib/junit-4.8.2.jar" />
+         </classpath>
+
+         <formatter type="brief" usefile="false" />
+         <batchtest>
+            <fileset dir="out/test/mogade-java" includes="**/Test*.class" />
+         </batchtest>
+       </junit>
+
+      <fail message="Test Failed!!!" if="test.failure" />
+   </target>
+
+</project>
