@@ -18,18 +18,27 @@ import java.util.TreeSet;
 public class MogadeImpl implements Mogade
 {
    public static final String VERSION = "1";
-   public static final String APIURL = "http://api.mogade.com/";
+   private static final String APIURL = "http://api.mogade.com/";
+   private static final String CONTENT_TYPE = "application/json";
 
    private Gson gson = new GsonBuilder().create();
    private String gameKey;
    private String secret;
+   private int connectTimeout;
+   private int readTimeout;
 
-   private MogadeImpl(String gameKey, String secret)
+   private MogadeImpl(String gameKey, String secret, int connectTimeout, int readTimeout)
    {
       this.gameKey = gameKey;
       this.secret = secret;
+      this.connectTimeout = connectTimeout;
+      this.readTimeout = readTimeout;
    }
    public static Mogade create(String gameKey, String secret)
+   {
+      return create(gameKey, secret, 5000, 10000);
+   }
+   public static Mogade create(String gameKey, String secret, int connectTimeout, int readTimeout)
    {
       if (Utility.isNullOrEmpty(gameKey))
       {
@@ -39,8 +48,34 @@ public class MogadeImpl implements Mogade
       {
          throw new IllegalArgumentException("Invalid secret");
       }
-      return new MogadeImpl(gameKey, secret);
+      if (connectTimeout < 0)
+      {
+         throw new IllegalArgumentException("Invalid connectTimeout");
+      }
+      if (readTimeout < 0)
+      {
+         throw new IllegalArgumentException("Invalid readTimeout");
+      }
+      return new MogadeImpl(gameKey, secret, connectTimeout, readTimeout);
    }
+
+   public int getConnectTimeout()
+   {
+      return connectTimeout;
+   }
+   public void setConnectTimeout(int connectTimeout)
+   {
+      this.connectTimeout = connectTimeout;
+   }
+   public int getReadTimeout()
+   {
+      return readTimeout;
+   }
+   public void setReadTimeout(int readTimeout)
+   {
+      this.readTimeout = readTimeout;
+   }
+
    public SaveScoreResponse saveScore(String leaderboardId, Score score)
    {
       if (Utility.isNullOrEmpty(leaderboardId))
@@ -66,7 +101,7 @@ public class MogadeImpl implements Mogade
    {
       createAndSetSig(request);
       String jsonRequest = gson.toJson(request);
-      return HttpRequest.execute(new URL(APIURL+request.getUrl()), URLEncoder.encode(jsonRequest,"UTF-8").getBytes(), "application/json", request.getRequestMethod().toString());
+      return HttpRequest.execute(new URL(APIURL+request.getUrl()), URLEncoder.encode(jsonRequest,"UTF-8").getBytes(), CONTENT_TYPE, request.getRequestMethod().toString(), connectTimeout, readTimeout);
    }
    private void createAndSetSig(Request request)
    {

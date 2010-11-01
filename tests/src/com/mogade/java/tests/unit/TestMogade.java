@@ -29,10 +29,20 @@ public class TestMogade
    {
       MogadeImpl.create("GAMEKEY","");
    }
+   @Test(expected=IllegalArgumentException.class)
+   public void testCreateInvalidConnectTimeout()
+   {
+      MogadeImpl.create("GAMEKEY","", -1, 5000);
+   }
+   @Test(expected=IllegalArgumentException.class)
+   public void testCreateInvalidReadTimeout()
+   {
+      MogadeImpl.create("GAMEKEY","", 5000, -1);
+   }
    @Test
    public void testCreateSuccess()
    {
-      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET", 0, 0);
       assertNotNull(mogade);
    }
 
