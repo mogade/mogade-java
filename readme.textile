@@ -51,4 +51,4 @@ h2. API Overview
 
 Mogade is based around a _RESTish_ API, accepting and returning JSON messages.
 
-A full API overview can be read here "http://mogade.com/api":http://mogade.com/api
+A full API overview can be read here "http://mogade.com/libraries#api":http://mogade.com/libraries#api
