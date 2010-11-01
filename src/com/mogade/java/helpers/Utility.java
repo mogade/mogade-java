@@ -37,4 +37,68 @@ public class Utility
    {
       return DigestUtils.md5Hex(s);
    }
+   public static String replace(String orig, String from, String to)
+   {
+      if (Utility.isNullOrEmpty(orig) || Utility.isNullOrEmpty(from))
+      {
+         return orig;
+      }
+
+      if (to == null)
+      {
+         to  = "";
+      }
+
+      int fromLength = from.length();
+      int start = orig.indexOf(from);
+
+      if (start == -1)
+      {
+         return orig;
+      }
+
+      StringBuffer buffer;
+
+      if (to.length() >= fromLength)
+      {
+         if (from.equals(to))
+         {
+             return orig;
+         }
+         buffer = new StringBuffer(orig.length());
+      }
+      else
+      {
+         buffer = new StringBuffer();
+      }
+
+      char[] origChars = orig.toCharArray();
+
+      int copyFrom = 0;
+      while (start != -1)
+      {
+         buffer.append(origChars, copyFrom, start-copyFrom);
+         buffer.append(to);
+         copyFrom = start + fromLength;
+         start = orig.indexOf (from, copyFrom);
+      }
+
+      buffer.append(origChars, copyFrom, origChars.length-copyFrom);
+      return buffer.toString();
+   }
+   public static String format(String format, Object...o)
+   {
+      int cnt = o.length;
+
+      if (cnt == 0)
+      {
+         return format;
+      }
+
+      for(int i = 0 ; i < cnt ; i++)
+      {
+         format = replace(format, "{"+i+"}", o[i].toString());
+      }
+      return format;
+   }
 }

@@ -29,20 +29,10 @@ public class TestMogade
    {
       MogadeImpl.create("GAMEKEY","");
    }
-   @Test(expected=IllegalArgumentException.class)
-   public void testCreateInvalidConnectTimeout()
-   {
-      MogadeImpl.create("GAMEKEY","", -1, 5000);
-   }
-   @Test(expected=IllegalArgumentException.class)
-   public void testCreateInvalidReadTimeout()
-   {
-      MogadeImpl.create("GAMEKEY","", 5000, -1);
-   }
    @Test
    public void testCreateSuccess()
    {
-      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET", 0, 0);
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
       assertNotNull(mogade);
    }
 
@@ -51,32 +41,6 @@ public class TestMogade
    {
       Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
       assertTrue(mogade.getApiVersion() > 0);
-   }
-   @Test
-   public void testGetSetConnectTimeout()
-   {
-      int timeout = 2;
-      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET", timeout, 5000);
-
-      assertEquals(timeout, mogade.getConnectTimeout());
-
-      timeout++;
-
-      mogade.setConnectTimeout(timeout);
-      assertEquals(timeout, mogade.getConnectTimeout());
-   }
-   @Test
-   public void testGetSetReadTimeout()
-   {
-      int timeout = 5;
-      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET", 5000, timeout);
-
-      assertEquals(timeout, mogade.getReadTimeout());
-
-      timeout++;
-
-      mogade.setReadTimeout(timeout);
-      assertEquals(timeout, mogade.getReadTimeout());
    }
 
    @Test(expected=IllegalArgumentException.class)

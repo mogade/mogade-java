@@ -27,7 +27,7 @@ public class TestUtility
       assertEquals("e4d909c290d0fb1ca068ffaddf22cbd0", Utility.md5("The quick brown fox jumps over the lazy dog."));
    }
    @Test
-   public void flattenJsonElement()
+   public void testFlattenJsonElement()
    {
       Obj obj = new Obj();
       obj.key = "keyvalue";
@@ -48,5 +48,17 @@ public class TestUtility
       assertEquals(flat.get("username"), "brian");
       assertEquals(flat.get("points"), "2000");
       assertEquals(flat.get("data"), "nothing");
+   }
+   @Test
+   public void testReplace()
+   {
+      assertEquals("white fox jump", Utility.replace("brown fox jump", "brown", "white"));
+      assertEquals("brown fox swim", Utility.replace("brown fox jump", "jump", "swim"));
+      assertEquals("brown rabbit jump", Utility.replace("brown fox jump", "fox", "rabbit"));
+   }
+   @Test
+   public void testFormat()
+   {
+      assertEquals("http://127.0.0.1:9000/", Utility.format("http://{0}:{1}/", "127.0.0.1", 9000));
    }
 }

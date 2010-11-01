@@ -67,7 +67,7 @@ public class DebugRunner
       sb.append("Tests run: " + result.getRunCount() + ", ");
       sb.append("Failures: " + result.getFailureCount() + ", ");
       sb.append("Igorned: " + result.getIgnoreCount() + ", ");
-      sb.append("Time elapsed: " + result.getRunTime() + " sec");
+      sb.append("Time elapsed: " + result.getRunTime() + " ms");
 
       if (result.getFailureCount() > 0)
       {
