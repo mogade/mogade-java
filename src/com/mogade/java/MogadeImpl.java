@@ -126,24 +126,8 @@ public class MogadeImpl implements Mogade
    }
    private String sendRequest(Request request) throws IOException
    {
-      createAndSetSig(request);
+      request.setSig(request.calculateSignature(secret));
       String jsonRequest = gson.toJson(request);
       return HttpRequest.execute(new URL(APIURL+request.getUrl()), jsonRequest.getBytes(), CONTENT_TYPE, request.getRequestMethod().toString(), connectTimeout, readTimeout);
-   }
-   private void createAndSetSig(Request request)
-   {
-      Map<String,String> elements = Utility.flattenJsonElement(gson.toJsonTree(request), null);
-      StringBuilder sb = new StringBuilder(100);
-
-      for (String k : new TreeSet<String>(elements.keySet()))
-      {
-         sb.append(k);
-         sb.append("=");
-         sb.append(elements.get(k));
-         sb.append("&");
-      }
-
-      sb.append(secret);
-      request.setSig(Utility.md5(sb.toString()));
    }
 }

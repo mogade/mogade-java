@@ -6,4 +6,5 @@ public interface Request
    public abstract String getUrl();
    public abstract RequestMethod getRequestMethod();
    public void setSig(String sig);
+   public String calculateSignature(String secret);
 }
