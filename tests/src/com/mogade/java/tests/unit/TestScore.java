@@ -2,6 +2,7 @@ package com.mogade.java.tests.unit;
 
 import com.mogade.java.data.Score;
 import org.junit.Test;
+import static junit.framework.Assert.*;
 
 public class TestScore
 {
@@ -19,6 +20,12 @@ public class TestScore
          sb.append("a");
       }
 
-      Score.create(null, 0, sb.toString());
+      Score.create("brian", 1, sb.toString());
+   }
+   @Test
+   public void testScoreCreateSuccess()
+   {
+      assertNotNull(Score.create("brian", 1));
+      assertNotNull(Score.create("brian", 1, "data"));
    }
 }

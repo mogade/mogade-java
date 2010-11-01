@@ -6,7 +6,7 @@ public class SaveScoreResponse extends BaseResponseImpl
    private long weekly;
    private long overall;
 
-   public SaveScoreResponse()
+   private SaveScoreResponse()
    {
    }
    public SaveScoreResponse(String maintenance, String error)

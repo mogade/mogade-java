@@ -2,12 +2,12 @@ package com.mogade.java;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
 import com.mogade.java.helpers.HttpRequest;
 import com.mogade.java.helpers.Utility;
-import com.mogade.java.protocol.Request;
-import com.mogade.java.protocol.SaveScoreRequest;
-import com.mogade.java.protocol.SaveScoreResponse;
+import com.mogade.java.protocol.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -95,17 +95,40 @@ public class MogadeImpl implements Mogade
       {
          return gson.fromJson(sendRequest(new SaveScoreRequest(gameKey, VERSION, leaderboardId, score)), SaveScoreResponse.class);
       }
+      catch(JsonParseException ex)
+      {
+         return new SaveScoreResponse(null, "json parse exception:" + ex.getMessage());
+      }
       catch(IOException ex)
       {
          return new SaveScoreResponse(null, ex.getMessage());
       }
    }
+   public GetLeaderboardResponse getLeaderboard(Leaderboard leaderboard)
+   {
+      if (leaderboard == null)
+      {
+         throw new IllegalArgumentException("Invalid leaderboard");
+      }
 
+      try
+      {
+         return gson.fromJson(sendRequest(new GetLeaderboardRequest(gameKey, VERSION, leaderboard)), GetLeaderboardResponse.class);
+      }
+      catch(JsonParseException ex)
+      {
+         return new GetLeaderboardResponse(null, "json parse exception:" + ex.getMessage());
+      }
+      catch(IOException ex)
+      {
+         return new GetLeaderboardResponse(null, ex.getMessage());
+      }
+   }
    private String sendRequest(Request request) throws IOException
    {
       createAndSetSig(request);
       String jsonRequest = gson.toJson(request);
-      return HttpRequest.execute(new URL(APIURL+request.getUrl()), URLEncoder.encode(jsonRequest,"UTF-8").getBytes(), CONTENT_TYPE, request.getRequestMethod().toString(), connectTimeout, readTimeout);
+      return HttpRequest.execute(new URL(APIURL+request.getUrl()), jsonRequest.getBytes(), CONTENT_TYPE, request.getRequestMethod().toString(), connectTimeout, readTimeout);
    }
    private void createAndSetSig(Request request)
    {

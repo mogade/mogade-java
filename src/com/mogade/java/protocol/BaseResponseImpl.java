@@ -6,7 +6,8 @@ public abstract class BaseResponseImpl implements Response
 {
    private String maintenance;
    private String error;
-   public BaseResponseImpl()
+
+   protected BaseResponseImpl()
    {
    }
    public BaseResponseImpl(String maintenance, String error)

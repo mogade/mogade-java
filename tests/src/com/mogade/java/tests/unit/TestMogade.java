@@ -91,4 +91,11 @@ public class TestMogade
       Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
       mogade.saveScore("LEADER", null);
    }
+
+   @Test(expected=IllegalArgumentException.class)
+   public void testGetLeaderboardInvalidLeaderboard()
+   {
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
+      mogade.getLeaderboard(null);
+   }
 }

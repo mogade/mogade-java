@@ -9,6 +9,9 @@ public class Score
    private long points;
    private String data;
 
+   private Score()
+   {
+   }
    private Score(String username, long points, String data)
    {
       this.username = username;
