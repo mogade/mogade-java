@@ -20,9 +20,11 @@ The "http://groups.google.com/group/mogadedev":http://groups.google.com/group/mo
 h2. Usage
 
 <pre>
-String leaderboardId = "MyFunGame";  //this is provided from the admin on the site
+String leaderboardId = "1cc425bf5346ed081f0000ef";  //leaderboards are created and assigned an id by mogade.com
+String gameKey = "1cc3cb835346ed081f0000ee";        //the game key and secret are provided by mogade.com
+String secret = "aT4][A;28q]V?!!";
 
-Mogade mogade = MogadeImpl.create("MyGameKey", "MySecret");  //the game key is provided by the site
+Mogade mogade = MogadeImpl.create(gameKey, secret);
 SaveScoreResponse response =  mogade.saveScore(leaderboardId, new Score("brian", 2000));
 
 if (!response.isOk())
