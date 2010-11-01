@@ -36,7 +36,7 @@ public class HttpRequest
          {
             return readAll(connection.getInputStream());
          }
-         if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST)
+         if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST || responseCode == HttpURLConnection.HTTP_UNAVAILABLE)
          {
             return readAll(connection.getErrorStream());
          }

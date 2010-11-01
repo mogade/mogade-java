@@ -2,6 +2,8 @@ package com.mogade.java.protocol;
 
 public interface Response
 {
-   public boolean hasError();
-   public String getError();
+   public boolean isOk();
+   public boolean isUnavailable();
+   public boolean isError();
+   public String getStatus();
 }

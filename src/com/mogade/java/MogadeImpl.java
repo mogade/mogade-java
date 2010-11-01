@@ -93,7 +93,7 @@ public class MogadeImpl implements Mogade
       }
       catch(IOException ex)
       {
-         return new SaveScoreResponse(ex.getMessage());
+         return new SaveScoreResponse(null, ex.getMessage());
       }
    }
 

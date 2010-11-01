@@ -16,7 +16,9 @@ public class TestMogade
       Mogade mogade = MogadeImpl.create("UNKNOWNGAMEKEY","SECRET");
       SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", 2000));
 
-      assertTrue(response.hasError());
+      assertFalse(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertTrue(response.isError());
       assertEquals(response.getDaily(), 0);
       assertEquals(response.getWeekly(), 0);
       assertEquals(response.getOverall(), 0);

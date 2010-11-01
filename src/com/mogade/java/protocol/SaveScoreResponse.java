@@ -9,9 +9,9 @@ public class SaveScoreResponse extends BaseResponseImpl
    public SaveScoreResponse()
    {
    }
-   public SaveScoreResponse(String error)
+   public SaveScoreResponse(String maintenance, String error)
    {
-      super(error);
+      super(maintenance, error);
    }
    public long getDaily()
    {
