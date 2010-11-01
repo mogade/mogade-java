@@ -86,7 +86,7 @@ public class TestMogade
    @Test
    public void testSaveScoreSuccessNotAllRanksReturned()
    {
-      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"daily\":1}"));
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"daily\":25}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
       SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
 
@@ -94,23 +94,14 @@ public class TestMogade
       assertFalse(response.isUnavailable());
       assertFalse(response.isError());
 
-      if (response.getDaily() > 0)
-      {
-         assertEquals(1, response.getDaily());
-      }
-      if (response.getWeekly() > 0)
-      {
-         assertEquals(1, response.getWeekly());
-      }
-      if (response.getOverall() > 0)
-      {
-         assertEquals(1, response.getOverall());
-      }
+      assertEquals(25, response.getDaily());
+      assertEquals(0, response.getWeekly());
+      assertEquals(0, response.getOverall());
    }
    @Test
    public void testSaveScoreSuccess()
    {
-      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"daily\":1,\"weekly\":1,\"overall\":1}"));
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"daily\":5,\"weekly\":10,\"overall\":171}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
       SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
 
@@ -118,18 +109,9 @@ public class TestMogade
       assertFalse(response.isUnavailable());
       assertFalse(response.isError());
 
-      if (response.getDaily() > 0)
-      {
-         assertEquals(1, response.getDaily());
-      }
-      if (response.getWeekly() > 0)
-      {
-         assertEquals(1, response.getWeekly());
-      }
-      if (response.getOverall() > 0)
-      {
-         assertEquals(1, response.getOverall());
-      }
+      assertEquals(5, response.getDaily());
+      assertEquals(10, response.getWeekly());
+      assertEquals(171, response.getOverall());
    }
 
    @Test
@@ -148,7 +130,7 @@ public class TestMogade
    @Test
    public void testGetLeaderboardSuccess()
    {
-      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"scores\":[{\"points\":1288645059419,\"data\":null,\"username\":\"brian\"},{\"points\":1288644912581,\"data\":null,\"username\":\"brian\"},{\"points\":1288644811199,\"data\":null,\"username\":\"brian\"},{\"points\":1288644808116,\"data\":null,\"username\":\"brian\"},{\"points\":1288644804249,\"data\":null,\"username\":\"brian\"},{\"points\":1288644788102,\"data\":null,\"username\":\"brian\"},{\"points\":1288644777987,\"data\":null,\"username\":\"brian\"},{\"points\":1288644766700,\"data\":null,\"username\":\"brian\"},{\"points\":1288640696617,\"data\":null,\"username\":\"brian\"},{\"points\":1288640603765,\"data\":null,\"username\":\"brian\"}]}"));
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"scores\":[{\"points\":1288645059419,\"data\":null,\"username\":\"brian\"},{\"points\":1288644912581,\"data\":\"some data\",\"username\":\"brian2\"}]}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
       GetLeaderboardResponse response = mogade.getLeaderboard(Leaderboard.create("lid", 1, Leaderboard.Scope.OVERALL));
 
@@ -156,6 +138,16 @@ public class TestMogade
       assertFalse(response.isUnavailable());
       assertFalse(response.isError());
 
-      assertTrue(response.getScores().size() > 0);
+      assertTrue(response.getScores().size() == 2);
+
+      Score score = response.getScores().get(0);
+      assertEquals(1288645059419L, score.getPoints());
+      assertNull(score.getData());
+      assertEquals("brian", score.getUsername());
+
+      score = response.getScores().get(1);
+      assertEquals(1288644912581L, score.getPoints());
+      assertEquals("some data", score.getData());
+      assertEquals("brian2", score.getUsername());
    }
 }
