@@ -46,6 +46,39 @@ public class TestMogade
       assertNotNull(mogade);
    }
 
+   @Test
+   public void testGetApiVersion()
+   {
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
+      assertTrue(mogade.getApiVersion() > 0);
+   }
+   @Test
+   public void testGetSetConnectTimeout()
+   {
+      int timeout = 2;
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET", timeout, 5000);
+
+      assertEquals(timeout, mogade.getConnectTimeout());
+
+      timeout++;
+
+      mogade.setConnectTimeout(timeout);
+      assertEquals(timeout, mogade.getConnectTimeout());
+   }
+   @Test
+   public void testGetSetReadTimeout()
+   {
+      int timeout = 5;
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET", 5000, timeout);
+
+      assertEquals(timeout, mogade.getReadTimeout());
+
+      timeout++;
+
+      mogade.setReadTimeout(timeout);
+      assertEquals(timeout, mogade.getReadTimeout());
+   }
+
    @Test(expected=IllegalArgumentException.class)
    public void testSaveScoreInvalidLeaderboardId()
    {

@@ -4,7 +4,7 @@ import com.mogade.java.helpers.Utility;
 
 public class Score
 {
-   public static final int DATA_MAXLEN = 20;
+   public static final int DATA_MAXLEN = 25;
    private String username;
    private long points;
    private String data;

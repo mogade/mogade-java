@@ -9,7 +9,7 @@ public class SaveScoreRequest extends BaseRequestImpl
    private String leaderboardId;
    private Score score;
 
-   public SaveScoreRequest(String key, String v, String leaderboardId, Score score)
+   public SaveScoreRequest(String key, int v, String leaderboardId, Score score)
    {
       super(key, v);
       this.leaderboardId = leaderboardId;
