@@ -64,11 +64,11 @@ public class MogadeImpl implements Mogade
       }
       catch(JsonParseException ex)
       {
-         return new SaveScoreResponse(null, "json parse exception:" + ex.getMessage());
+         return new SaveScoreResponse(null, null, "json parse exception:" + ex.getMessage());
       }
       catch(IOException ex)
       {
-         return new SaveScoreResponse(null, ex.getMessage());
+         return new SaveScoreResponse(null, null, ex.getMessage());
       }
    }
    public GetLeaderboardResponse getLeaderboard(Leaderboard leaderboard)
@@ -84,11 +84,11 @@ public class MogadeImpl implements Mogade
       }
       catch(JsonParseException ex)
       {
-         return new GetLeaderboardResponse(null, "json parse exception:" + ex.getMessage());
+         return new GetLeaderboardResponse(null, null, "json parse exception:" + ex.getMessage());
       }
       catch(IOException ex)
       {
-         return new GetLeaderboardResponse(null, ex.getMessage());
+         return new GetLeaderboardResponse(null, null, ex.getMessage());
       }
    }
    private String sendRequest(Request request) throws IOException

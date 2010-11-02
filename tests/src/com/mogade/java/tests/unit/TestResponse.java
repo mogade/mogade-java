@@ -10,19 +10,32 @@ public class TestResponse
    @Test
    public void testOkResponse()
    {
-      Response response = new SaveScoreResponse(null, null);
+      Response response = new SaveScoreResponse(null, null, null);
 
+      assertNull(response.getInfo());
       assertTrue(response.isOk());
       assertFalse(response.isUnavailable());
       assertFalse(response.isError());
       assertNull(response.getStatus());
    }
    @Test
+   public void testOkResponseWithInfo()
+   {
+      String msg = "great username";
+      Response response = new SaveScoreResponse(msg, null, null);
+
+      assertEquals(msg, response.getInfo());
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+   }
+   @Test
    public void testUnavailableResponse()
    {
-      String msg = "down for maintenacne";
-      Response response = new SaveScoreResponse(msg, null);
+      String msg = "down for maintenance";
+      Response response = new SaveScoreResponse(null, msg, null);
 
+      assertNull(response.getInfo());
       assertFalse(response.isOk());
       assertTrue(response.isUnavailable());
       assertFalse(response.isError());
@@ -32,8 +45,9 @@ public class TestResponse
    public void testErrorResponse()
    {
       String msg = "error occured";
-      Response response = new SaveScoreResponse(null, msg);
+      Response response = new SaveScoreResponse(null, null, msg);
 
+      assertNull(response.getInfo());
       assertFalse(response.isOk());
       assertFalse(response.isUnavailable());
       assertTrue(response.isError());

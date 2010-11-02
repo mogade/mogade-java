@@ -85,12 +85,6 @@ public class DebugRunner
 
    public static void main(String[] args) throws ClassNotFoundException
    {
-      if (args.length == 2)
-      {
-         System.setProperty("http.proxyHost", args[0]);
-         System.setProperty("http.proxyPort", args[1]);
-      }
-
       String[] packages = new String[] {"com.mogade.java.tests.unit", "com.mogade.java.tests.functional"};
 
       int failed = 0;

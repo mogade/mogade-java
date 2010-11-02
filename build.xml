@@ -18,8 +18,8 @@
       </jar>
    </target>
 
-   <target name="test" depends="build">
-      <junit failureProperty="test.failure">
+   <target name="test-local" depends="build">
+      <junit haltonfailure="yes">
          <classpath>
             <pathelement path="${outputPath}" />
             <pathelement path="out/test/mogade-java" />
@@ -29,11 +29,30 @@
 
          <formatter type="brief" usefile="false" />
          <batchtest>
-            <fileset dir="out/test/mogade-java" includes="**/Test*.class" />
+            <fileset dir="out/test/mogade-java">
+               <include name="**/Test*.class" />
+               <exclude name="**/*Live*.class" />
+            </fileset>
          </batchtest>
-       </junit>
+      </junit>
+   </target>
+   
+   <target name="test-live" depends="build">
+      <junit haltonfailure="yes">
+         <classpath>
+            <pathelement path="${outputPath}" />
+            <pathelement path="out/test/mogade-java" />
+            <pathelement location="lib/gson-1.5.jar" />
+            <pathelement location="tests/lib/junit-4.8.2.jar" />
+         </classpath>
 
-      <fail message="Test Failed!!!" if="test.failure" />
+         <formatter type="brief" usefile="false" />
+         <batchtest>
+            <fileset dir="out/test/mogade-java" includes="**/Test*Live*.class" />
+         </batchtest>
+      </junit>
    </target>
 
+   <target name="test-all" depends="test-local, test-live" />
+   
 </project>

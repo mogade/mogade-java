@@ -11,9 +11,9 @@ public class GetLeaderboardResponse extends BaseResponseImpl
    private GetLeaderboardResponse()
    {
    }
-   public GetLeaderboardResponse(String maintenance, String error)
+   public GetLeaderboardResponse(String info, String maintenance, String error)
    {
-      super(maintenance, error);
+      super(info, maintenance, error);
    }
 
    public List<Score> getScores()

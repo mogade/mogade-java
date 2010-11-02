@@ -3,6 +3,7 @@ package com.mogade.java.tests.functional;
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
 
+import com.google.gson.JsonParseException;
 import com.mogade.java.Mogade;
 import com.mogade.java.MogadeConfigurationImpl;
 import com.mogade.java.MogadeImpl;
@@ -99,6 +100,35 @@ public class TestMogade
       assertEquals(0, response.getOverall());
    }
    @Test
+   public void testSaveScoreInvalidUsername()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"error\":\"invalid data\",\"info\":\"username is a badword\"}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
+
+      assertFalse(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertTrue(response.isError());
+      assertEquals("invalid data", response.getStatus());
+      assertEquals("username is a badword", response.getInfo());
+
+      assertEquals(0, response.getDaily());
+      assertEquals(0, response.getWeekly());
+      assertEquals(0, response.getOverall());
+   }
+   @Test
+   public void testSaveScoreJsonParseException()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "not json"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
+
+      assertFalse(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertTrue(response.isError());
+      assertTrue(response.getStatus().startsWith("json parse exception"));
+   }
+   @Test
    public void testSaveScoreSuccess()
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"daily\":5,\"weekly\":10,\"overall\":171}"));
@@ -130,10 +160,11 @@ public class TestMogade
    @Test
    public void testGetLeaderboardSuccess()
    {
-      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"scores\":[{\"points\":1288645059419,\"data\":null,\"username\":\"brian\"},{\"points\":1288644912581,\"data\":\"some data\",\"username\":\"brian2\"}]}"));
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"info\":\"wicked leaderboard\",\"scores\":[{\"points\":1288645059419,\"data\":null,\"username\":\"brian\"},{\"points\":1288644912581,\"data\":\"some data\",\"username\":\"brian2\"}]}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
       GetLeaderboardResponse response = mogade.getLeaderboard(Leaderboard.create("lid", 1, Leaderboard.Scope.OVERALL));
 
+      assertEquals("wicked leaderboard", response.getInfo());
       assertTrue(response.isOk());
       assertFalse(response.isUnavailable());
       assertFalse(response.isError());
