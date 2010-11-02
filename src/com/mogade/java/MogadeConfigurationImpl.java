@@ -8,16 +8,19 @@ import java.net.URL;
 public class MogadeConfigurationImpl implements MogadeConfiguration
 {
    private static final MogadeConfiguration instance = new MogadeConfigurationImpl();
-   private static final String APIURL = "http://api.mogade.com/";
-   private static final int CONNECTTIMEOUT = 5000;
-   private static final int READTIMEOUT = 10000;
+   private static final String APIURL_DEFAULT = "http://api.mogade.com/";
+   private static final int CONNECTTIMEOUT_DEFAULT = 5000;
+   private static final int READTIMEOUT_DEFAULT = 10000;
+   private static final boolean KEEPALIVE_DEFAULT = false;
 
-   private String apiUrl = null;
-   private int connectTimeout = -1;
-   private int readTimeout = -1;
+   private String apiUrl;
+   private int connectTimeout;
+   private int readTimeout;
+   private boolean keepAlive;
 
    private MogadeConfigurationImpl()
    {
+      resetDefaults();
    }
    public static MogadeConfiguration instance()
    {
@@ -26,13 +29,14 @@ public class MogadeConfigurationImpl implements MogadeConfiguration
 
    public void resetDefaults()
    {
-      apiUrl = null;
-      connectTimeout = -1;
-      readTimeout = -1;
+      apiUrl = APIURL_DEFAULT;
+      connectTimeout = CONNECTTIMEOUT_DEFAULT;
+      readTimeout = READTIMEOUT_DEFAULT;
+      keepAlive = KEEPALIVE_DEFAULT;
    }
    public String getApiUrl()
    {
-      return Utility.isNullOrEmpty(apiUrl) ? APIURL : apiUrl;
+      return apiUrl;
    }
    public void setApiUrl(String apiUrl)
    {
@@ -44,7 +48,7 @@ public class MogadeConfigurationImpl implements MogadeConfiguration
    }
    public int getConnectTimeout()
    {
-      return (connectTimeout == -1) ? CONNECTTIMEOUT : connectTimeout;
+      return connectTimeout;
    }
    public void setConnectTimeout(int connectTimeout)
    {
@@ -56,7 +60,7 @@ public class MogadeConfigurationImpl implements MogadeConfiguration
    }
    public int getReadTimeout()
    {
-      return (readTimeout == -1) ? READTIMEOUT : readTimeout;
+      return readTimeout;
    }
    public void setReadTimeout(int readTimeout)
    {
@@ -65,5 +69,13 @@ public class MogadeConfigurationImpl implements MogadeConfiguration
          throw new IllegalArgumentException("Invalid readTimeout");
       }
       this.readTimeout = readTimeout;
+   }
+   public boolean getKeepAlive()
+   {
+      return keepAlive;
+   }
+   public void setKeepAlive(boolean keepAlive)
+   {
+      this.keepAlive = keepAlive;
    }
 }

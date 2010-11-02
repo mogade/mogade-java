@@ -1,7 +1,5 @@
 package com.mogade.java;
 
-import java.net.MalformedURLException;
-
 public interface MogadeConfiguration
 {
    public void resetDefaults();
@@ -12,4 +10,6 @@ public interface MogadeConfiguration
    public void setConnectTimeout(int connectTimeout);
    public int getReadTimeout();
    public void setReadTimeout(int readTimeout);
+   public boolean getKeepAlive();
+   public void setKeepAlive(boolean keepAlive);
 }

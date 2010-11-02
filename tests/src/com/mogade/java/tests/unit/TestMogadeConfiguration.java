@@ -49,16 +49,26 @@ public class TestMogadeConfiguration
       assertEquals(2, MogadeConfigurationImpl.instance().getReadTimeout());
    }
    @Test
+   public void testGetSetKeepAlive()
+   {
+      boolean ka = MogadeConfigurationImpl.instance().getKeepAlive();
+      MogadeConfigurationImpl.instance().setKeepAlive(!ka);
+      assertEquals(!ka, MogadeConfigurationImpl.instance().getKeepAlive());
+   }
+   
+   @Test
    public void testResetDefaults()
    {
       MogadeConfiguration config = MogadeConfigurationImpl.instance();
       config.setApiUrl("brian");
       config.setConnectTimeout(3);
       config.setReadTimeout(4);
+      config.setKeepAlive(true);
       config.resetDefaults();
 
       assertFalse("brian".equals(config.getApiUrl()));
       assertFalse(3 == config.getConnectTimeout());
       assertFalse(4 == config.getReadTimeout());
+      assertFalse(true == config.getKeepAlive());
    }
 }

@@ -96,6 +96,7 @@ public class MogadeImpl implements Mogade
       request.setSig(request.calculateSignature(secret));
       String jsonRequest = gson.toJson(request);
       MogadeConfiguration config = MogadeConfigurationImpl.instance();
+      System.setProperty("http.keepAlive", String.valueOf(config.getKeepAlive()));
       return HttpRequest.execute(new URL(config.getApiUrl()+request.getUrl()), jsonRequest.getBytes(), CONTENT_TYPE, request.getRequestMethod().toString(), config.getConnectTimeout(), config.getReadTimeout());
    }
 }
