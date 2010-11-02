@@ -1,8 +1,10 @@
 package com.mogade.java.helpers;
 
 import com.google.gson.JsonElement;
-import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,32 @@ public class Utility
    }
    public static String md5(String s)
    {
-      return DigestUtils.md5Hex(s);
+      try
+      {
+         return encodeHexString(MessageDigest.getInstance("MD5").digest(s.getBytes("UTF-8")));
+      }
+      catch (UnsupportedEncodingException e)
+      {
+         throw new RuntimeException(e.getMessage());
+      }
+      catch (NoSuchAlgorithmException e)
+      {
+         throw new RuntimeException(e.getMessage());
+      }
+   }
+   public static String encodeHexString(byte[] bytes)
+   {
+      final char[] toDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+      int l = bytes.length;
+      char[] out = new char[l << 1];
+
+      for (int i = 0, j = 0; i < l; i++)
+      {
+         out[j++] = toDigits[(0xF0 & bytes[i]) >>> 4];
+         out[j++] = toDigits[0x0F & bytes[i]];
+      }
+      return new String(out);
    }
    public static String replace(String orig, String from, String to)
    {

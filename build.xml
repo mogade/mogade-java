@@ -24,7 +24,6 @@
             <pathelement path="${outputPath}" />
             <pathelement path="out/test/mogade-java" />
             <pathelement location="lib/gson-1.5.jar" />
-            <pathelement location="lib/commons-codec-1.4.jar" />
             <pathelement location="tests/lib/junit-4.8.2.jar" />
          </classpath>
 

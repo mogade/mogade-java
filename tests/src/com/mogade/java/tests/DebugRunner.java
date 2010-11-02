@@ -100,6 +100,13 @@ public class DebugRunner
          for(Class clazz : getClasses(p))
          {
             System.out.println("Testsuite: " + clazz.getName());
+
+            if (clazz.getName().contains("Live"))
+            {
+               System.out.println("[SKIPPED]\n");
+               continue;
+            }
+
             failed += outputTestResult(org.junit.runner.JUnitCore.runClasses(clazz));
          }
       }

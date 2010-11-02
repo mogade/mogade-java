@@ -54,10 +54,6 @@
   
   <!-- Project Libraries -->
   
-  <path id="library.apachecommonscodec.classpath">
-    <pathelement location="${basedir}/lib/commons-codec-1.4.jar"/>
-  </path>
-  
   <path id="library.gson.classpath">
     <pathelement location="${basedir}/lib/gson-1.5.jar"/>
   </path>
@@ -86,21 +82,18 @@
   
   <path id="mogade-java.module.production.classpath">
     <path refid="library.gson.classpath"/>
-    <path refid="library.apachecommonscodec.classpath"/>
     <path refid="library.junit.classpath"/>
   </path>
   
   <path id="mogade-java.runtime.production.module.classpath">
     <pathelement location="${mogade-java.output.dir}"/>
     <path refid="library.gson.classpath"/>
-    <path refid="library.apachecommonscodec.classpath"/>
     <path refid="library.junit.classpath"/>
   </path>
   
   <path id="mogade-java.module.classpath">
     <pathelement location="${mogade-java.output.dir}"/>
     <path refid="library.gson.classpath"/>
-    <path refid="library.apachecommonscodec.classpath"/>
     <path refid="library.junit.classpath"/>
   </path>
   
@@ -108,7 +101,6 @@
     <pathelement location="${mogade-java.output.dir}"/>
     <pathelement location="${mogade-java.testoutput.dir}"/>
     <path refid="library.gson.classpath"/>
-    <path refid="library.apachecommonscodec.classpath"/>
     <path refid="library.junit.classpath"/>
   </path>
   
