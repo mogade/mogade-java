@@ -72,6 +72,10 @@ for(Score score : response.getScores())
 }
 </pre>
 
+h3. More Usage Samples
+
+View the tests!
+
 h2. API Overview
 
 Mogade is based around a _RESTish_ API, accepting and returning JSON messages.
