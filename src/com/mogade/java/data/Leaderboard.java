@@ -1,7 +1,6 @@
 package com.mogade.java.data;
 
-import com.google.gson.annotations.SerializedName;
-import com.mogade.java.helpers.Utility;
+import com.mogade.java.helpers.Validator;
 
 public class Leaderboard
 {
@@ -32,18 +31,9 @@ public class Leaderboard
    }
    public static Leaderboard create(String id, int page, Scope scope)
    {
-      if (Utility.isNullOrEmpty(id))
-      {
-         throw new IllegalArgumentException("Invalid id");
-      }
-      if (page <=0 )
-      {
-         throw new IllegalArgumentException("Invalid page");
-      }
-      if (scope == null)
-      {
-         throw new IllegalArgumentException("Invalid scope");
-      }
+      Validator.assertNotNullOrEmpty(id, "Invalid id");
+      Validator.assertGreaterThanZero(page, "Invalid page");
+      Validator.assertNotNull(scope, "Invalid scope");
       return new Leaderboard(id, page, scope);
    }
 }

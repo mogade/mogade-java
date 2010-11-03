@@ -1,6 +1,7 @@
 package com.mogade.java;
 
 import com.mogade.java.helpers.Utility;
+import com.mogade.java.helpers.Validator;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,10 +41,7 @@ public class MogadeConfigurationImpl implements MogadeConfiguration
    }
    public void setApiUrl(String apiUrl)
    {
-      if (Utility.isNullOrEmpty(apiUrl))
-      {
-         throw new IllegalArgumentException("Invalid apiUrl");
-      }
+      Validator.assertNotNullOrEmpty(apiUrl, "Invalid apiUrl");
       this.apiUrl = apiUrl;
    }
    public int getConnectTimeout()
@@ -52,10 +50,7 @@ public class MogadeConfigurationImpl implements MogadeConfiguration
    }
    public void setConnectTimeout(int connectTimeout)
    {
-      if (connectTimeout < 0)
-      {
-         throw new IllegalArgumentException("Invalid connectTimeout");
-      }
+      Validator.assertPositive(connectTimeout, "Invalid connectTimeout");
       this.connectTimeout = connectTimeout;
    }
    public int getReadTimeout()
@@ -64,10 +59,7 @@ public class MogadeConfigurationImpl implements MogadeConfiguration
    }
    public void setReadTimeout(int readTimeout)
    {
-      if (readTimeout < 0)
-      {
-         throw new IllegalArgumentException("Invalid readTimeout");
-      }
+      Validator.assertPositive(readTimeout, "Invalid readTimeout");
       this.readTimeout = readTimeout;
    }
    public boolean getKeepAlive()

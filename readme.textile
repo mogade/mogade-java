@@ -25,6 +25,11 @@ String gameKey = "1cc3cb835346ed081f0000ee";        //the game key and secret ar
 String secret = "aT4][A;28q]V?!!";
 
 Mogade mogade = MogadeImpl.create(gameKey, secret);
+</pre>
+
+h3. SaveScore
+
+<pre>
 SaveScoreResponse response =  mogade.saveScore(leaderboardId, new Score("brian", 2000));
 
 if (!response.isOk())
@@ -33,17 +38,37 @@ if (!response.isOk())
    return;
 }
 
+//sometimes the ranks won't be defined, depending on the current server load 
 if (response.getDaily() > 0)
 {
-   //do something with rank
+   //do something with daily rank
 }
 if (response.getWeekly() > 0)
 {
-   //do something with rank
+   //do something with weekly rank
 }
 if (response.getOverall() > 0)
 {
-   //do something with rank
+   //do something with overall rank
+}
+</pre>
+
+h3. GetLeaderboard
+
+<pre>
+int page = 1;
+GetLeaderboardResponse response = mogade.getLeaderboard(Leaderboard.create(leaderboardId, page, Leaderboard.Scope.DAILY));
+
+if (!response.isOk())
+{
+   //do something with response.getStatus();
+   return;
+}
+
+for(Score score : response.getScores())
+{
+   //do something with score
+   //score.getUsername(), score.getPoints(), score.getData()
 }
 </pre>
 

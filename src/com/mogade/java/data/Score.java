@@ -1,6 +1,7 @@
 package com.mogade.java.data;
 
 import com.mogade.java.helpers.Utility;
+import com.mogade.java.helpers.Validator;
 
 public class Score
 {
@@ -25,14 +26,8 @@ public class Score
    }
    public static Score create(String username, long points, String data)
    {
-      if (Utility.isNullOrEmpty(username))
-      {
-         throw new IllegalArgumentException("Invalid username");
-      }
-      if (!Utility.isNullOrEmpty(data) && data.length() > DATA_MAXLEN)
-      {
-         throw new IllegalArgumentException("Invalid data, can't be more than " + DATA_MAXLEN + " chars");
-      }
+      Validator.assertNotNullOrEmpty(username, "Invalid username");
+      Validator.assertMaxLength(data, DATA_MAXLEN, "Invalid data, can't be more than " + DATA_MAXLEN + " chars");
       return new Score(username, points, data);
    }
 

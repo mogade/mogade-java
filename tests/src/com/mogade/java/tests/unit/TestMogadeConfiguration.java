@@ -2,17 +2,18 @@ package com.mogade.java.tests.unit;
 
 import com.mogade.java.MogadeConfiguration;
 import com.mogade.java.MogadeConfigurationImpl;
+import com.mogade.java.MogadeException;
 import org.junit.Test;
 import static junit.framework.Assert.*;
 
 public class TestMogadeConfiguration
 {
-   @Test(expected = IllegalArgumentException.class)
+   @Test(expected = MogadeException.class)
    public void testSetApiUrlInvalid()
    {
       MogadeConfigurationImpl.instance().setApiUrl(null);
    }
-   @Test(expected = IllegalArgumentException.class)
+   @Test(expected = MogadeException.class)
    public void testSetApiUrlInvalid2()
    {
       MogadeConfigurationImpl.instance().setApiUrl("");
@@ -24,7 +25,7 @@ public class TestMogadeConfiguration
       MogadeConfigurationImpl.instance().setApiUrl("brian");
       assertEquals("brian", MogadeConfigurationImpl.instance().getApiUrl());
    }
-   @Test(expected = IllegalArgumentException.class)
+   @Test(expected = MogadeException.class)
    public void testSetConnectTimeoutInvalid()
    {
       MogadeConfigurationImpl.instance().setConnectTimeout(-1);
@@ -36,7 +37,7 @@ public class TestMogadeConfiguration
       MogadeConfigurationImpl.instance().setConnectTimeout(2);
       assertEquals(2, MogadeConfigurationImpl.instance().getConnectTimeout());
    }
-   @Test(expected = IllegalArgumentException.class)
+   @Test(expected = MogadeException.class)
    public void testSetReadTimeoutInvalid()
    {
       MogadeConfigurationImpl.instance().setReadTimeout(-1);

@@ -7,6 +7,7 @@ import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
 import com.mogade.java.helpers.HttpRequest;
 import com.mogade.java.helpers.Utility;
+import com.mogade.java.helpers.Validator;
 import com.mogade.java.protocol.*;
 
 import java.io.IOException;
@@ -31,14 +32,8 @@ public class MogadeImpl implements Mogade
    }
    public static Mogade create(String gameKey, String secret)
    {
-      if (Utility.isNullOrEmpty(gameKey))
-      {
-         throw new IllegalArgumentException("Invalid gameKey");
-      }
-      if (Utility.isNullOrEmpty(secret))
-      {
-         throw new IllegalArgumentException("Invalid secret");
-      }
+      Validator.assertNotNullOrEmpty(gameKey, "Invalid gameKey");
+      Validator.assertNotNullOrEmpty(secret, "Invalid secret");
       return new MogadeImpl(gameKey, secret);
    }
 
@@ -49,14 +44,8 @@ public class MogadeImpl implements Mogade
 
    public SaveScoreResponse saveScore(String leaderboardId, Score score)
    {
-      if (Utility.isNullOrEmpty(leaderboardId))
-      {
-         throw new IllegalArgumentException("Invalid leaderboardId");
-      }
-      if (score == null)
-      {
-         throw new IllegalArgumentException("Invalid score");
-      }
+      Validator.assertNotNullOrEmpty(leaderboardId, "Invalid leaderboardId");
+      Validator.assertNotNull(score, "Invalid score");
 
       try
       {
@@ -73,10 +62,7 @@ public class MogadeImpl implements Mogade
    }
    public GetLeaderboardResponse getLeaderboard(Leaderboard leaderboard)
    {
-      if (leaderboard == null)
-      {
-         throw new IllegalArgumentException("Invalid leaderboard");
-      }
+      Validator.assertNotNull(leaderboard, "Invalid leaderboard");
 
       try
       {
