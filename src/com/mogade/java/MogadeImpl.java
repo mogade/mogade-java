@@ -6,15 +6,11 @@ import com.google.gson.JsonParseException;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
 import com.mogade.java.helpers.HttpRequest;
-import com.mogade.java.helpers.Utility;
 import com.mogade.java.helpers.Validator;
 import com.mogade.java.protocol.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Map;
-import java.util.TreeSet;
 
 public class MogadeImpl implements Mogade
 {
@@ -75,6 +71,21 @@ public class MogadeImpl implements Mogade
       catch(IOException ex)
       {
          return new GetLeaderboardResponse(null, null, ex.getMessage());
+      }
+   }
+   public GetConfigVersionResponse getConfigVersion()
+   {
+      try
+      {
+         return gson.fromJson(sendRequest(new GetConfigVersionRequest(gameKey, getApiVersion())), GetConfigVersionResponse.class);
+      }
+      catch(JsonParseException ex)
+      {
+         return new GetConfigVersionResponse(null, null, "json parse exception:" + ex.getMessage());
+      }
+      catch(IOException ex)
+      {
+         return new GetConfigVersionResponse(null, null, ex.getMessage());
       }
    }
    private String sendRequest(Request request) throws IOException

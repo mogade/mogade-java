@@ -3,13 +3,13 @@ package com.mogade.java.tests.functional;
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
 
-import com.google.gson.JsonParseException;
 import com.mogade.java.Mogade;
 import com.mogade.java.MogadeConfigurationImpl;
 import com.mogade.java.MogadeImpl;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
 import com.mogade.java.helpers.Utility;
+import com.mogade.java.protocol.GetConfigVersionResponse;
 import com.mogade.java.protocol.GetLeaderboardResponse;
 import com.mogade.java.protocol.SaveScoreResponse;
 import com.mogade.java.tests.FakeServer;
@@ -180,5 +180,19 @@ public class TestMogade
       assertEquals(1288644912581L, score.getPoints());
       assertEquals("some data", score.getData());
       assertEquals("brian2", score.getUsername());
+   }
+
+   @Test
+   public void testConfigVersionSuccess()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"version\":10}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetConfigVersionResponse response = mogade.getConfigVersion();
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertEquals(10, response.getVersion());
    }
 }

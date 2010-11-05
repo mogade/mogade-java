@@ -4,6 +4,7 @@ import com.mogade.java.Mogade;
 import com.mogade.java.MogadeImpl;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
+import com.mogade.java.protocol.GetConfigVersionResponse;
 import com.mogade.java.protocol.GetLeaderboardResponse;
 import com.mogade.java.protocol.SaveScoreResponse;
 import org.junit.Before;
@@ -97,5 +98,18 @@ public class TestLive
       assertFalse(response.isError());
 
       assertTrue(response.getScores().size() > 0);
+   }
+
+   @Test
+   public void testConfigVersionSuccess()
+   {
+      Mogade mogade = MogadeImpl.create(gameKey, secret);
+      GetConfigVersionResponse response = mogade.getConfigVersion();
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertTrue(response.getVersion() > 0);
    }
 }
