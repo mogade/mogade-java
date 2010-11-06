@@ -8,10 +8,10 @@ public interface Mogade
 {
    public int getApiVersion();
 
-   public SaveScoreResponse saveScore(String leaderboardId, Score score);
-   public GetLeaderboardResponse getLeaderboard(Leaderboard leaderboard);
    public GetConfigVersionResponse getConfigVersion();
    public GetConfigResponse getConfig();
    public GetUserGameDataResponse getUserGameData(String username, String unique);
+   public SaveScoreResponse saveScore(String leaderboardId, Score score);
+   public GetLeaderboardResponse getLeaderboard(Leaderboard leaderboard);
    public SaveAchievementResponse saveAchievement(String achievementId, String username, String unique);
 }

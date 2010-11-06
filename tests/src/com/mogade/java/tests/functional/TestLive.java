@@ -2,6 +2,7 @@ package com.mogade.java.tests.functional;
 
 import com.mogade.java.Mogade;
 import com.mogade.java.MogadeImpl;
+import com.mogade.java.data.Achievement;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
 import com.mogade.java.protocol.*;
@@ -15,7 +16,8 @@ public class TestLive
    private final static String gameKey = "4cce25151d9517161400000e";
    private final static String secret = "qRA]:A;28q]V?UU";
    private final static String leaderboardId = "4cceda2a563d8a335a000008";
-   private final static int achievementCount = 0;  //!!!needs to reflect achievement count for this test account
+   private final static String achievementId = "4cd4bb0e9ae3e706ea000001";
+   private final static long achievementPoints = 451;
 
    @Before
    public void setupProxy()
@@ -122,8 +124,14 @@ public class TestLive
       assertFalse(response.isError());
 
       assertTrue(response.getVersion() > 0);
+      assertTrue(response.hasAchievements());
       assertNotNull(response.getAchievements());
       assertTrue(response.getAchievements().size() > 0);
+
+      assertNotNull(response.getAchievements().get(0).getId());
+      assertNotNull(response.getAchievements().get(0).getName());
+      assertNotNull(response.getAchievements().get(0).getDescription());
+      assertTrue(response.getAchievements().get(0).getPoints() > 0);
    }
    @Test
    public void testGetUserGameDataResponse()
@@ -135,8 +143,23 @@ public class TestLive
       assertFalse(response.isUnavailable());
       assertFalse(response.isError());
 
+      assertTrue(response.hasAchievements());
       assertNotNull(response.getAchievements());
       assertTrue(response.getAchievements().size() > 0);
+
+      GetConfigResponse config = mogade.getConfig();
+
+      for(String myAchievement : response.getAchievements())
+      {
+         for(Achievement achievement : config.getAchievements())
+         {
+            if (achievement.getId().equals(myAchievement))
+            {
+               break;
+            }
+            fail("Achievement earned was not in the achievement config");
+         }
+      }
    }
    @Test
    public void testSaveAchievementInvalidAchievementId()
@@ -149,5 +172,17 @@ public class TestLive
       assertTrue(response.isError());
 
       assertEquals(0, response.getPoints());
+   }
+   @Test
+   public void testSaveAchievementSuccess()
+   {
+      Mogade mogade = MogadeImpl.create(gameKey, secret);
+      SaveAchievementResponse response = mogade.saveAchievement(achievementId, "brian", "1");
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertEquals(achievementPoints, response.getPoints());
    }
 }

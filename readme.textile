@@ -19,6 +19,8 @@ The "http://groups.google.com/group/mogadedev":http://groups.google.com/group/mo
 
 h2. Usage
 
+I have also tried to put these in order of typical session usage as well.
+
 <pre>
 String leaderboardId = "1cc425bf5346ed081f0000ef";  //leaderboards are created and assigned an id by mogade.com
 String gameKey = "1cc3cb835346ed081f0000ee";        //the game key and secret are provided by mogade.com
@@ -26,6 +28,45 @@ String secret = "aT4][A;28q]V?!!";
 
 Mogade mogade = MogadeImpl.create(gameKey, secret);
 </pre>
+
+h3. GetConfigVersion / GetConfig
+
+<pre>
+int savedConfigVersion = PersistentLocalDatastore.getConfigVersion();
+
+GetConfigVersionResponse response = mogade.getConfigVersion();
+
+if (!response.isOk())
+{
+   //do something with response.getStatus();
+   return;
+}
+
+if (savedConfigVersion != response.getVersion())
+{
+   GetConfigResponse response = mogade.getConfig();
+   PersistentLocalDatastore.saveConfig(response);
+}
+</pre>
+
+h3. GetUserGameData
+
+String username = PersistentLocalDatastore.getUsername();
+String unique = DeviceAPI.getDeviceSerialNumberOrSomethingUniqueAboutThisDeviceOrComputer();
+
+GetUserGameDataResponse response = mogade.getUserGameData(username, unique);
+
+if (!response.isOk())
+{
+   //do something with response.getStatus();
+   return;
+}
+
+for(String achievementId : response.getAchievements())
+{
+   //get achievement from config data by id
+   //show user they have earned that achievement
+}
 
 h3. SaveScore
 
@@ -51,6 +92,28 @@ if (response.getOverall() > 0)
 {
    //do something with overall rank
 }
+</pre>
+
+h3. SaveAchievement
+
+<pre>
+
+//Maybe check the obtain UserGameData and see if they have already obtained this achievement and don't save again??
+
+String achievementId = "8cc425bf5346ed081f0000e1";
+String username = PersistentLocalDatastore.getUsername();
+String unique = DeviceAPI.getDeviceSerialNumberOrSomethingUniqueAboutThisDeviceOrComputer();
+
+SaveAchievementResponse response = mogade.saveAchievement(achievementId, username, unique);
+
+if (!response.isOk())
+{
+   //do something with response.getStatus();
+   return;
+}
+
+long pointsAwarded = response.getPoints();  //do something with this
+
 </pre>
 
 h3. GetLeaderboard
