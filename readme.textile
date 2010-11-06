@@ -21,6 +21,8 @@ h2. Usage
 
 I have also tried to put these in order of typical session usage as well.
 
+h3. Mogade Creation
+
 <pre>
 String leaderboardId = "1cc425bf5346ed081f0000ef";  //leaderboards are created and assigned an id by mogade.com
 String gameKey = "1cc3cb835346ed081f0000ee";        //the game key and secret are provided by mogade.com
@@ -51,6 +53,7 @@ if (savedConfigVersion != response.getVersion())
 
 h3. GetUserGameData
 
+<pre>
 String username = PersistentLocalDatastore.getUsername();
 String unique = DeviceAPI.getDeviceSerialNumberOrSomethingUniqueAboutThisDeviceOrComputer();
 
@@ -62,11 +65,12 @@ if (!response.isOk())
    return;
 }
 
-for(String achievementId : response.getAchievements())
+for(String earnedAchievementId : response.getAchievements())
 {
-   //get achievement from config data by id
+   //get achievement from config data by earnedAchievementId
    //show user they have earned that achievement
 }
+</pre>
 
 h3. SaveScore
 
@@ -97,8 +101,8 @@ if (response.getOverall() > 0)
 h3. SaveAchievement
 
 <pre>
-
-//Maybe check the obtain UserGameData and see if they have already obtained this achievement and don't save again??
+//Maybe check the saved UserGameData and see if they have already earned this achievement and don't save again?? 
+//Depends on game specifics.
 
 String achievementId = "8cc425bf5346ed081f0000e1";
 String username = PersistentLocalDatastore.getUsername();
