@@ -10,7 +10,7 @@ This is the official Java library - which is meant not only to be used within ga
 
 h3. Other Libraries
 
-For a list of other libraries, please visit "http://mogade.com/libraries":http://mogade.com/libraries
+For a list of other libraries, please visit "http://mogade.com/manage/libraries":http://mogade.com/manage/libraries
 
 h3. Support
 
@@ -147,4 +147,4 @@ h2. API Overview
 
 Mogade is based around a _RESTish_ API, accepting and returning JSON messages.
 
-A full API overview can be read here "http://mogade.com/libraries#api":http://mogade.com/libraries#api
+A full API overview can be read here "http://mogade.com/manage/api":http://mogade.com/manage/api
