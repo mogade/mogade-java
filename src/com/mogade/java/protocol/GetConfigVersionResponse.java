@@ -3,7 +3,8 @@ package com.mogade.java.protocol;
 public class GetConfigVersionResponse extends BaseResponseImpl
 {
    private int version;
-   private GetConfigVersionResponse()
+
+   protected GetConfigVersionResponse()
    {
    }
    public GetConfigVersionResponse(String info, String maintenance, String error)

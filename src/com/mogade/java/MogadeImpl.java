@@ -88,6 +88,57 @@ public class MogadeImpl implements Mogade
          return new GetConfigVersionResponse(null, null, ex.getMessage());
       }
    }
+   public GetConfigResponse getConfig()
+   {
+      try
+      {
+         return gson.fromJson(sendRequest(new GetConfigRequest(gameKey, getApiVersion())), GetConfigResponse.class);
+      }
+      catch(JsonParseException ex)
+      {
+         return new GetConfigResponse(null, null, "json parse exception:" + ex.getMessage());
+      }
+      catch(IOException ex)
+      {
+         return new GetConfigResponse(null, null, ex.getMessage());
+      }
+   }
+   public GetUserGameDataResponse getUserGameData(String username, String unique)
+   {
+      Validator.assertNotNullOrEmpty(username, "Invalid username");
+      Validator.assertNotNullOrEmpty(unique, "Invalid unique");
+      try
+      {
+         return gson.fromJson(sendRequest(new GetUserGameDataRequest(gameKey, getApiVersion(), username, unique)), GetUserGameDataResponse.class);
+      }
+      catch(JsonParseException ex)
+      {
+         return new GetUserGameDataResponse(null, null, "json parse exception:" + ex.getMessage());
+      }
+      catch(IOException ex)
+      {
+         return new GetUserGameDataResponse(null, null, ex.getMessage());
+      }
+   }
+   public SaveAchievementResponse saveAchievement(String achievementId, String username, String unique)
+   {
+      Validator.assertNotNullOrEmpty(username, "Invalid achievementId");
+      Validator.assertNotNullOrEmpty(unique, "Invalid username");
+      Validator.assertNotNullOrEmpty(unique, "Invalid unique");
+      try
+      {
+         return gson.fromJson(sendRequest(new SaveAchievementRequest(gameKey, getApiVersion(), achievementId, username, unique)), SaveAchievementResponse.class);
+      }
+      catch(JsonParseException ex)
+      {
+         return new SaveAchievementResponse(null, null, "json parse exception:" + ex.getMessage());
+      }
+      catch(IOException ex)
+      {
+         return new SaveAchievementResponse(null, null, ex.getMessage());
+      }
+   }
+
    private String sendRequest(Request request) throws IOException
    {
       request.setSig(request.calculateSignature(secret));

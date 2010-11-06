@@ -6,12 +6,11 @@ import static junit.framework.Assert.assertEquals;
 import com.mogade.java.Mogade;
 import com.mogade.java.MogadeConfigurationImpl;
 import com.mogade.java.MogadeImpl;
+import com.mogade.java.data.Achievement;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
 import com.mogade.java.helpers.Utility;
-import com.mogade.java.protocol.GetConfigVersionResponse;
-import com.mogade.java.protocol.GetLeaderboardResponse;
-import com.mogade.java.protocol.SaveScoreResponse;
+import com.mogade.java.protocol.*;
 import com.mogade.java.tests.FakeServer;
 import org.junit.After;
 import org.junit.Before;
@@ -183,7 +182,7 @@ public class TestMogade
    }
 
    @Test
-   public void testConfigVersionSuccess()
+   public void testGetConfigVersionSuccess()
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"version\":10}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
@@ -194,5 +193,111 @@ public class TestMogade
       assertFalse(response.isError());
 
       assertEquals(10, response.getVersion());
+   }
+   @Test
+   public void testGetConfigNoAchievements()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"version\":10}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetConfigResponse response = mogade.getConfig();
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertEquals(10, response.getVersion());
+      assertFalse(response.hasAchievements());
+      assertNull(response.getAchievements());
+   }
+   @Test
+   public void testGetConfigEmptyAchievements()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"version\":10,\"achievements\":[]}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetConfigResponse response = mogade.getConfig();
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertEquals(10, response.getVersion());
+      assertNotNull(response.getAchievements());
+      assertFalse(response.hasAchievements());
+      assertEquals(0, response.getAchievements().size());
+   }
+   @Test
+   public void testGetConfigSuccess()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"version\":10,\"achievements\":[{\"id\":\"9sdf923sdfsfd9\",\"name\":\"Level 1 expert\",\"desc\":\"finish first level in 20 secs\",\"points\":90210},{\"id\":\"2l3k23kj2l3jkl3k\",\"name\":\"Level 5 expert\", \"desc\":\"finish fifth level in 120 secs\",\"points\":450578}]}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetConfigResponse response = mogade.getConfig();
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertEquals(10, response.getVersion());
+
+      assertTrue(response.hasAchievements());
+      assertTrue(response.getAchievements().size() == 2);
+
+      Achievement achievement = response.getAchievements().get(0);
+      assertEquals("9sdf923sdfsfd9", achievement.getId());
+      assertEquals("Level 1 expert", achievement.getName());
+      assertEquals("finish first level in 20 secs", achievement.getDescription());
+      assertEquals(90210, achievement.getPoints());
+
+      achievement = response.getAchievements().get(1);
+      assertEquals("2l3k23kj2l3jkl3k", achievement.getId());
+      assertEquals("Level 5 expert", achievement.getName());
+      assertEquals("finish fifth level in 120 secs", achievement.getDescription());
+      assertEquals(450578, achievement.getPoints());
+   }
+   @Test
+   public void testGetUserGameDataNoEarnedAchievements()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertFalse(response.hasAchievements());
+      assertNull(response.getAchievements());
+   }
+   @Test
+   public void testGetUserGameDataEmptyEarnedAchievements()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"achievements\":[]}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertFalse(response.hasAchievements());
+      assertNotNull(response.getAchievements());
+      assertEquals(0, response.getAchievements().size());
+   }
+   @Test
+   public void testGetUserGameDataSuccess()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"achievements\":[\"achieveid1\",\"achieveid2\",\"achieveid3\"]}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertTrue(response.hasAchievements());
+      assertNotNull(response.getAchievements());
+
+      assertEquals("achieveid1", response.getAchievements().get(0));
+      assertEquals("achieveid2", response.getAchievements().get(1));
+      assertEquals("achieveid3", response.getAchievements().get(2));
    }
 }

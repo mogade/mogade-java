@@ -4,9 +4,7 @@ import com.mogade.java.Mogade;
 import com.mogade.java.MogadeImpl;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
-import com.mogade.java.protocol.GetConfigVersionResponse;
-import com.mogade.java.protocol.GetLeaderboardResponse;
-import com.mogade.java.protocol.SaveScoreResponse;
+import com.mogade.java.protocol.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +15,7 @@ public class TestLive
    private final static String gameKey = "4cce25151d9517161400000e";
    private final static String secret = "qRA]:A;28q]V?UU";
    private final static String leaderboardId = "4cceda2a563d8a335a000008";
+   private final static int achievementCount = 0;  //!!!needs to reflect achievement count for this test account
 
    @Before
    public void setupProxy()
@@ -111,5 +110,44 @@ public class TestLive
       assertFalse(response.isError());
 
       assertTrue(response.getVersion() > 0);
+   }
+   @Test
+   public void testConfigSuccess()
+   {
+      Mogade mogade = MogadeImpl.create(gameKey, secret);
+      GetConfigResponse response = mogade.getConfig();
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertTrue(response.getVersion() > 0);
+      assertNotNull(response.getAchievements());
+      assertTrue(response.getAchievements().size() > 0);
+   }
+   @Test
+   public void testGetUserGameDataResponse()
+   {
+      Mogade mogade = MogadeImpl.create(gameKey, secret);
+      GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertNotNull(response.getAchievements());
+      assertTrue(response.getAchievements().size() > 0);
+   }
+   @Test
+   public void testSaveAchievementInvalidAchievementId()
+   {
+      Mogade mogade = MogadeImpl.create(gameKey, secret);
+      SaveAchievementResponse response = mogade.saveAchievement("invalid", "brian", "1");
+
+      assertFalse(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertTrue(response.isError());
+
+      assertEquals(0, response.getPoints());
    }
 }

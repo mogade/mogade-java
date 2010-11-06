@@ -63,4 +63,17 @@ public class TestMogade
       Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
       mogade.getLeaderboard(null);
    }
+
+   @Test(expected=MogadeException.class)
+   public void testGetUserGameDataInvalidUsername()
+   {
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
+      mogade.getUserGameData(null, "1");
+   }
+   @Test(expected=MogadeException.class)
+   public void testGetUserGameDataInvalidUnique()
+   {
+      Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
+      mogade.getUserGameData("brian", "");
+   }
 }

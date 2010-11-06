@@ -12,6 +12,6 @@ public class GetConfigVersionRequest extends BaseRequestImpl
    }
    public RequestMethod getRequestMethod()
    {
-      return RequestMethod.GET;
+      return RequestMethod.POST;
    }
 }
