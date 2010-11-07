@@ -13,6 +13,17 @@ public class TestScore
       Score.create(null, 2000);
    }
    @Test(expected=MogadeException.class)
+   public void testScoreInvalidUsernameLength()
+   {
+      StringBuilder sb = new StringBuilder();
+      for(int i = 0 ; i <= Score.USERNAME_MAXLEN ; i++)
+      {
+         sb.append("a");
+      }
+
+      Score.create(sb.toString(), 1);
+   }
+   @Test(expected=MogadeException.class)
    public void testScoreInvalidData()
    {
       StringBuilder sb = new StringBuilder();

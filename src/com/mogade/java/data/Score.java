@@ -5,6 +5,7 @@ import com.mogade.java.helpers.Validator;
 
 public class Score
 {
+   public static final int USERNAME_MAXLEN = 20;
    public static final int DATA_MAXLEN = 25;
    private String username;
    private long points;
@@ -27,6 +28,7 @@ public class Score
    public static Score create(String username, long points, String data)
    {
       Validator.assertNotNullOrEmpty(username, "Invalid username");
+      Validator.assertMaxLength(username, USERNAME_MAXLEN, "Invalid username, can't be more than " + USERNAME_MAXLEN + " chars");
       Validator.assertMaxLength(data, DATA_MAXLEN, "Invalid data, can't be more than " + DATA_MAXLEN + " chars");
       return new Score(username, points, data);
    }
