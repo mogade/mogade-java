@@ -14,6 +14,6 @@ public class GetConfigRequest extends BaseRequestImpl
 
    public String getUrl()
    {
-      return "api/conf";
+      return "conf";
    }
 }

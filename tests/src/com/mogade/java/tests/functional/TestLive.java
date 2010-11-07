@@ -27,7 +27,7 @@ public class TestLive
    {
       System.setProperty("http.proxyHost", "127.0.0.1");
       System.setProperty("http.proxyPort", "8888");
-      MogadeConfigurationImpl.instance().setApiUrl("http://testing.mogade.com/");
+      MogadeConfigurationImpl.instance().setApiUrl("http://testing.mogade.com/api/");
    }
 
    @After

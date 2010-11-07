@@ -5,7 +5,7 @@ import com.mogade.java.helpers.Validator;
 public class MogadeConfigurationImpl implements MogadeConfiguration
 {
    private static final MogadeConfiguration instance = new MogadeConfigurationImpl();
-   private static final String APIURL_DEFAULT = "http://api.mogade.com/";
+   private static final String APIURL_DEFAULT = "http://api.mogade.com/api/";
    private static final int CONNECTTIMEOUT_DEFAULT = 5000;
    private static final int READTIMEOUT_DEFAULT = 10000;
    private static final boolean KEEPALIVE_DEFAULT = false;

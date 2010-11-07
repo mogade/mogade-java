@@ -19,7 +19,7 @@ public class SaveAchievementRequest extends BaseRequestImpl
 
    public String getUrl()
    {
-      return "api/achievements";
+      return "achievements";
    }
    public RequestMethod getRequestMethod()
    {

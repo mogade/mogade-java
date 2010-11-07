@@ -18,7 +18,7 @@ public class SaveScoreRequest extends BaseRequestImpl
 
    public String getUrl()
    {
-      return "api/scores";
+      return "scores";
    }
    public RequestMethod getRequestMethod()
    {

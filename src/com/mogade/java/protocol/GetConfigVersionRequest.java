@@ -8,7 +8,7 @@ public class GetConfigVersionRequest extends BaseRequestImpl
    }
    public String getUrl()
    {
-      return "api/conf/version";
+      return "conf/version";
    }
    public RequestMethod getRequestMethod()
    {

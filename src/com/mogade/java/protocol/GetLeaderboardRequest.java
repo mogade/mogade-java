@@ -14,7 +14,7 @@ public class GetLeaderboardRequest extends BaseRequestImpl
 
    public String getUrl()
    {
-      return "api/scores";
+      return "scores";
    }
    public RequestMethod getRequestMethod()
    {

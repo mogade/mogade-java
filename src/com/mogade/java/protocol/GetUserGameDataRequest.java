@@ -18,6 +18,6 @@ public class GetUserGameDataRequest extends BaseRequestImpl
    }
    public String getUrl()
    {
-      return "api/conf/my";
+      return "conf/my";
    }
 }
