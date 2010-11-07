@@ -1,7 +1,3 @@
-h1. This library is not production ready
-
-You couldn't use this even if you wanted to..but keep an eye on our progress, we plan on having something usable by this November 6th
-
 h1. Mogade For Java
 
 Mogade is a free service web-based service which allows game developers to quickly enchance their games with auxiliary functionality (such as leaderboards).
