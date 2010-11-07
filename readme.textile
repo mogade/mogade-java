@@ -1,6 +1,6 @@
 h1. Mogade For Java
 
-Mogade is a free service web-based service which allows game developers to quickly enchance their games with auxiliary functionality (such as leaderboards).
+Mogade is a free web-based service which allows game developers to quickly enchance their games with auxiliary functionality (such as leaderboards).
 
 This is the official Java library - which is meant not only to be used within games, but also to serve as the basis for platform specific implementations. Developers interested in building a library for their own language will hopefully find this library to be decent documentation of the mogade API.
 
