@@ -1,10 +1,6 @@
 package com.mogade.java;
 
-import com.mogade.java.helpers.Utility;
 import com.mogade.java.helpers.Validator;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MogadeConfigurationImpl implements MogadeConfiguration
 {

@@ -1,11 +1,14 @@
 package com.mogade.java.tests.functional;
 
 import com.mogade.java.Mogade;
+import com.mogade.java.MogadeConfigurationImpl;
 import com.mogade.java.MogadeImpl;
 import com.mogade.java.data.Achievement;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
+import com.mogade.java.helpers.Utility;
 import com.mogade.java.protocol.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,10 +16,10 @@ import static junit.framework.Assert.*;
 
 public class TestLive
 {
-   private final static String gameKey = "4cce25151d9517161400000e";
-   private final static String secret = "qRA]:A;28q]V?UU";
-   private final static String leaderboardId = "4cceda2a563d8a335a000008";
-   private final static String achievementId = "4cd4bb0e9ae3e706ea000001";
+   private final static String gameKey = "4cd70c955a740858ad000005";
+   private final static String secret = "tY10w^l@a0s<F<EZ\\c";
+   private final static String leaderboardId = "4cd70dcd5a740858ad000007";
+   private final static String achievementId = "4cd70df95a740858ad000009";
    private final static long achievementPoints = 451;
 
    @Before
@@ -24,6 +27,13 @@ public class TestLive
    {
       System.setProperty("http.proxyHost", "127.0.0.1");
       System.setProperty("http.proxyPort", "8888");
+      MogadeConfigurationImpl.instance().setApiUrl("http://testing.mogade.com/");
+   }
+
+   @After
+   public void teardown()
+   {
+      MogadeConfigurationImpl.instance().resetDefaults();
    }
    
    @Test
