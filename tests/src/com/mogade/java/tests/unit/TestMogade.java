@@ -48,7 +48,7 @@ public class TestMogade
    public void testSaveScoreInvalidLeaderboardId()
    {
       Mogade mogade = MogadeImpl.create("GAMEKEY","SECRET");
-      mogade.saveScore("", Score.create("brian", 2000));
+      mogade.saveScore("", Score.create("brian", "unique", 2000));
    }
    @Test(expected=MogadeException.class)
    public void testSaveScoreInvalidScore()

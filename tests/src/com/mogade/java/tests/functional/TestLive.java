@@ -6,7 +6,6 @@ import com.mogade.java.MogadeImpl;
 import com.mogade.java.data.Achievement;
 import com.mogade.java.data.Leaderboard;
 import com.mogade.java.data.Score;
-import com.mogade.java.helpers.Utility;
 import com.mogade.java.protocol.*;
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +20,7 @@ public class TestLive
    private final static String leaderboardId = "4cd70dcd5a740858ad000007";
    private final static String achievementId = "4cd70df95a740858ad000009";
    private final static long achievementPoints = 451;
+   private final static String unique = "1";
 
    @Before
    public void setupProxy()
@@ -40,7 +40,7 @@ public class TestLive
    public void testSaveScoreUnknownGameKey()
    {
       Mogade mogade = MogadeImpl.create("UNKNOWNGAMEKEY", secret);
-      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", 2000));
+      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", unique, 2000));
 
       assertFalse(response.isOk());
       assertFalse(response.isUnavailable());
@@ -53,7 +53,7 @@ public class TestLive
    public void testSaveScoreWrongSecret()
    {
       Mogade mogade = MogadeImpl.create(gameKey, "SECRET");
-      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", 2000));
+      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", unique, 2000));
 
       assertFalse(response.isOk());
       assertFalse(response.isUnavailable());
@@ -66,7 +66,7 @@ public class TestLive
    public void testSaveScoreSuccess()
    {
       Mogade mogade = MogadeImpl.create(gameKey, secret);
-      SaveScoreResponse response = mogade.saveScore(leaderboardId, Score.create("brian", System.currentTimeMillis()));
+      SaveScoreResponse response = mogade.saveScore(leaderboardId, Score.create("brian", unique, System.currentTimeMillis()));
 
       assertTrue(response.isOk());
       assertFalse(response.isUnavailable());
@@ -147,7 +147,7 @@ public class TestLive
    public void testGetUserGameDataResponse()
    {
       Mogade mogade = MogadeImpl.create(gameKey, secret);
-      GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
+      GetUserGameDataResponse response = mogade.getUserGameData("brian", unique);
 
       assertTrue(response.isOk());
       assertFalse(response.isUnavailable());

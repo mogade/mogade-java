@@ -46,7 +46,7 @@ public class TestMogade
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"maintenance\":\"down for maintenance\"}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
-      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", 2000));
+      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", "unique", 2000));
 
       assertFalse(response.isOk());
       assertTrue(response.isUnavailable());
@@ -58,7 +58,7 @@ public class TestMogade
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"error\":\"unknown game key\"}"));
       Mogade mogade = MogadeImpl.create("UNKNOWNGAMEKEY", "SECRET");
-      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", 2000));
+      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", "unique", 2000));
 
       assertFalse(response.isOk());
       assertFalse(response.isUnavailable());
@@ -73,7 +73,7 @@ public class TestMogade
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"error\":\"invalid sig\"}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "WRONGSECRET");
-      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", 2000));
+      SaveScoreResponse response = mogade.saveScore("LEADER", Score.create("brian", "unique", 2000));
 
       assertFalse(response.isOk());
       assertFalse(response.isUnavailable());
@@ -88,7 +88,7 @@ public class TestMogade
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"daily\":25}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
-      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
+      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", "unique", System.currentTimeMillis()));
 
       assertTrue(response.isOk());
       assertFalse(response.isUnavailable());
@@ -103,7 +103,7 @@ public class TestMogade
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"error\":\"invalid data\",\"info\":\"username is a badword\"}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
-      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
+      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", "unique", System.currentTimeMillis()));
 
       assertFalse(response.isOk());
       assertFalse(response.isUnavailable());
@@ -116,11 +116,27 @@ public class TestMogade
       assertEquals(0, response.getOverall());
    }
    @Test
+   public void testSaveScoreInvalidUnique()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"error\":\"missing unique\"}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", "unique", System.currentTimeMillis()));
+
+      assertFalse(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertTrue(response.isError());
+      assertEquals("missing unique", response.getStatus());
+
+      assertEquals(0, response.getDaily());
+      assertEquals(0, response.getWeekly());
+      assertEquals(0, response.getOverall());
+   }
+   @Test
    public void testSaveScoreJsonParseException()
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "not json"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
-      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
+      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", "unique", System.currentTimeMillis()));
 
       assertFalse(response.isOk());
       assertFalse(response.isUnavailable());
@@ -132,7 +148,7 @@ public class TestMogade
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"daily\":5,\"weekly\":10,\"overall\":171}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
-      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", System.currentTimeMillis()));
+      SaveScoreResponse response = mogade.saveScore("lid", Score.create("brian", "unique", System.currentTimeMillis()));
 
       assertTrue(response.isOk());
       assertFalse(response.isUnavailable());

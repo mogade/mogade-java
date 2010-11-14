@@ -10,7 +10,12 @@ public class TestScore
    @Test(expected= MogadeException.class)
    public void testScoreInvalidUsername()
    {
-      Score.create(null, 2000);
+      Score.create(null, "unique", 2000);
+   }
+   @Test(expected= MogadeException.class)
+   public void testScoreInvalidUnique()
+   {
+      Score.create("brian", null, 2000);
    }
    @Test(expected=MogadeException.class)
    public void testScoreInvalidUsernameLength()
@@ -21,7 +26,7 @@ public class TestScore
          sb.append("a");
       }
 
-      Score.create(sb.toString(), 1);
+      Score.create(sb.toString(), "unique", 1);
    }
    @Test(expected=MogadeException.class)
    public void testScoreInvalidData()
@@ -32,12 +37,12 @@ public class TestScore
          sb.append("a");
       }
 
-      Score.create("brian", 1, sb.toString());
+      Score.create("brian", "unique", 1, sb.toString());
    }
    @Test
    public void testScoreCreateSuccess()
    {
-      assertNotNull(Score.create("brian", 1));
-      assertNotNull(Score.create("brian", 1, "data"));
+      assertNotNull(Score.create("brian", "unique", 1));
+      assertNotNull(Score.create("brian", "unique", 1, "data"));
    }
 }
