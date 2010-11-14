@@ -272,7 +272,7 @@ public class TestMogade
    @Test
    public void testGetUserGameDataNoEarnedAchievements()
    {
-      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{}"));
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"leaderboards\":[{\"id\":\"4cd70dcd5a740858ad000007\",\"points\":1289704288638}]}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
       GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
 
@@ -286,7 +286,7 @@ public class TestMogade
    @Test
    public void testGetUserGameDataEmptyEarnedAchievements()
    {
-      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"achievements\":[]}"));
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"achievements\":[],\"{leaderboards\":[{\"id\":\"4cd70dcd5a740858ad000007\",\"points\":1289704288638}]}\"}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
       GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
 
@@ -299,9 +299,38 @@ public class TestMogade
       assertEquals(0, response.getAchievements().size());
    }
    @Test
-   public void testGetUserGameDataSuccess()
+   public void testGetUserGameDataNoHighScoresAchievements()
    {
       fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"achievements\":[\"achieveid1\",\"achieveid2\",\"achieveid3\"]}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertFalse(response.hasHighScores());
+      assertNull(response.getHighScores());
+   }
+   @Test
+   public void testGetUserGameDataEmptyHighScores()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"achievements\":[\"achieveid1\",\"achieveid2\",\"achieveid3\"],\"leaderboards\":[]}"));
+      Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
+      GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
+
+      assertTrue(response.isOk());
+      assertFalse(response.isUnavailable());
+      assertFalse(response.isError());
+
+      assertFalse(response.hasHighScores());
+      assertNotNull(response.getHighScores());
+      assertEquals(0, response.getHighScores().size());
+   }
+   @Test
+   public void testGetUserGameDataSuccess()
+   {
+      fakeServer.addResponse(new FakeServer.FakeResponse(HttpURLConnection.HTTP_OK, "{\"achievements\":[\"achieveid1\",\"achieveid2\",\"achieveid3\"],\"leaderboards\":[{\"id\":\"lid\",\"points\":1289704288638}]}\"}"));
       Mogade mogade = MogadeImpl.create("GAMEKEY", "SECRET");
       GetUserGameDataResponse response = mogade.getUserGameData("brian", "1");
 
@@ -315,5 +344,11 @@ public class TestMogade
       assertEquals("achieveid1", response.getAchievements().get(0));
       assertEquals("achieveid2", response.getAchievements().get(1));
       assertEquals("achieveid3", response.getAchievements().get(2));
+
+      assertTrue(response.hasHighScores());
+      assertNotNull(response.getHighScores());
+
+      assertEquals("lid", response.getHighScores().get(0).getLeaderboardId());
+      assertEquals(1289704288638L, response.getHighScores().get(0).getPoints());
    }
 }

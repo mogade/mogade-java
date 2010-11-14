@@ -157,6 +157,11 @@ public class TestLive
       assertNotNull(response.getAchievements());
       assertTrue(response.getAchievements().size() > 0);
 
+      assertTrue(response.hasHighScores());
+      assertNotNull(response.getHighScores());
+      assertTrue(response.getHighScores().size() > 0);
+
+
       GetConfigResponse config = mogade.getConfig();
 
       for(String myAchievement : response.getAchievements())

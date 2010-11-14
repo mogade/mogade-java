@@ -1,6 +1,5 @@
 package com.mogade.java.data;
 
-import com.mogade.java.helpers.Utility;
 import com.mogade.java.helpers.Validator;
 
 public class Score
